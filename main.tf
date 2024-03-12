@@ -90,7 +90,6 @@ resource "aws_db_instance" "rds-fiaptech" {
   instance_class          = "db.t2.micro"
   manage_master_user_password = true # Guarda o usuário e senha do banco de dados no AWS Secrets Manager
   username                = "admin"
-  password                = aws_secretsmanager_secret_version.db_password_version.secret_string
   publicly_accessible     = false
   db_subnet_group_name    = "default" # Selecione o grupo de subnets correto
   vpc_security_group_ids  = [aws_security_group.db_security_group.id]
