@@ -5,6 +5,7 @@ provider "aws" {
   region = "us-east-1" # Defina sua região AWS aqui
 }
 
+data "aws_availability_zones" "available" {}
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
@@ -67,7 +68,7 @@ resource "aws_security_group" "db_security_group" {
   name        = "db-security-group"
   description = "Security group for RDS PostgreSQL"
 
-  vpc_id = data.aws_vpc.existing_vpc.id
+  vpc_id = module.vpc.vpc_id
 
   # Defina as regras de entrada e saída conforme necessário
   # Exemplo de regra permitindo conexões na porta 5432 (PostgreSQL)
