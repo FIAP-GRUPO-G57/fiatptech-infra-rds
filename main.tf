@@ -18,6 +18,7 @@ resource "aws_db_subnet_group" "rds-fiaptech" {
   }
   lifecycle {
   prevent_destroy = true
+  ignore_changes = [description, subnet_ids]
     }
 }
 
