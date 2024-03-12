@@ -16,10 +16,13 @@ resource "aws_db_subnet_group" "rds-fiaptech" {
     Terraform   = "true"
     Environment = "prod"
   }
+  lifecycle {
+  prevent_destroy = true
+    }
 }
 
-resource "aws_security_group" "rds-fiaptech" {
-  name   = "rrds-prod-securitygroup"
+resource "aws_security_group" "sg-rds-fiaptech" {
+  name   = "rds-prod-securitygroup"
   vpc_id = "vpc-005f8c7fbcaf140d8"
 
   ingress {
@@ -41,6 +44,9 @@ resource "aws_security_group" "rds-fiaptech" {
     Terraform   = "true"
     Environment = "prod"
   }
+  lifecycle {
+  prevent_destroy = true
+}
 }
 
 # Recurso RDS PostgreSQL
@@ -55,8 +61,11 @@ resource "aws_db_instance" "rds-fiaptech" {
   username                = "admin"
   publicly_accessible     = false
   db_subnet_group_name    = "default" # Selecione o grupo de subnets correto
-  vpc_security_group_ids  = [aws_security_group.rds-fiaptech.id]
+  vpc_security_group_ids  = [aws_security_group.sg-rds-fiaptech.id]
 
+lifecycle {
+  prevent_destroy = true
+}
 }
 
 resource "aws_secretsmanager_secret_rotation" "rds-fiaptech" {
@@ -72,3 +81,4 @@ resource "aws_secretsmanager_secret_rotation" "rds-fiaptech" {
 data "aws_secretsmanager_secret" "rds-fiaptech" {
   arn = aws_db_instance.rds-fiaptech.master_user_secret[0].secret_arn
 }
+
