@@ -7,30 +7,9 @@ provider "aws" {
 
 data "aws_availability_zones" "available" {}
 
-module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "5.5.2"
-
-  name = "rds-prod-vpc"
-  cidr = "10.0.0.0/16"
-
-  azs             = data.aws_availability_zones.available.names
-  private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
-  public_subnets  = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
-
-  enable_dns_hostnames = true
-  enable_dns_support   = true
-
-  tags = {
-    Project     = "rds"
-    Terraform   = "true"
-    Environment = "prod"
-  }
-}
-
 resource "aws_db_subnet_group" "rds-fiaptech" {
   name       = "rds-prod-subnetgroup"
-  subnet_ids = module.vpc.public_subnets
+  subnet_ids = ["subnet-0976e430aa2640363","subnet-09e3e7080c4b28af7"]
 
   tags = {
     Project     = "rds"
@@ -41,7 +20,7 @@ resource "aws_db_subnet_group" "rds-fiaptech" {
 
 resource "aws_security_group" "rds-fiaptech" {
   name   = "rms-prod-securitygroup"
-  vpc_id = module.vpc.vpc_id
+  vpc_id = "vpc-005f8c7fbcaf140d8"
 
   ingress {
     from_port   = 5432
@@ -68,8 +47,7 @@ resource "aws_security_group" "db_security_group" {
   name        = "db-security-group"
   description = "Security group for RDS PostgreSQL"
 
-  vpc_id = module.vpc.vpc_id
-
+    vpc_id = "vpc-005f8c7fbcaf140d8"
   # Defina as regras de entrada e saída conforme necessário
   # Exemplo de regra permitindo conexões na porta 5432 (PostgreSQL)
   ingress {
