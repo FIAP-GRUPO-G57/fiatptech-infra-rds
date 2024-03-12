@@ -10,7 +10,7 @@ module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "5.5.2"
 
-  name = "rrds-prod-vpc"
+  name = "rds-prod-vpc"
   cidr = "10.0.0.0/16"
 
   azs             = data.aws_availability_zones.available.names
@@ -21,7 +21,7 @@ module "vpc" {
   enable_dns_support   = true
 
   tags = {
-    Project     = "rms"
+    Project     = "rds"
     Terraform   = "true"
     Environment = "prod"
   }
@@ -32,7 +32,7 @@ resource "aws_db_subnet_group" "rds-fiaptech" {
   subnet_ids = module.vpc.public_subnets
 
   tags = {
-    Project     = "rms"
+    Project     = "rds"
     Terraform   = "true"
     Environment = "prod"
   }
@@ -97,15 +97,15 @@ resource "aws_db_instance" "rds-fiaptech" {
 }
 
 resource "aws_secretsmanager_secret_rotation" "rds-fiaptech" {
-  secret_id = aws_db_instance.rms.master_user_secret[0].secret_arn
+  secret_id = aws_db_instance.rds-fiaptech.master_user_secret[0].secret_arn
 
   rotation_rules {
-    automatically_after_days = 7 # (Optional) # O valor padrão é 7 dias
+    automatically_after_days = 30 # (Optional) # O valor padrão é 7 dias
   }
 }
 
 # Optionally fetch the secret data if attributes need to be used as inputs
 # elsewhere.
 data "aws_secretsmanager_secret" "rds-fiaptech" {
-  arn = aws_db_instance.rms.master_user_secret[0].secret_arn
+  arn = aws_db_instance.rds-fiaptech.master_user_secret[0].secret_arn
 }
