@@ -19,7 +19,7 @@ resource "aws_db_subnet_group" "rds-fiaptech" {
 }
 
 resource "aws_security_group" "rds-fiaptech" {
-  name   = "rms-prod-securitygroup"
+  name   = "rrds-prod-securitygroup"
   vpc_id = "vpc-005f8c7fbcaf140d8"
 
   ingress {
@@ -42,21 +42,6 @@ resource "aws_security_group" "rds-fiaptech" {
     Environment = "prod"
   }
 }
-# Recurso Security Group
-resource "aws_security_group" "db_security_group" {
-  name        = "db-security-group"
-  description = "Security group for RDS PostgreSQL"
-
-    vpc_id = "vpc-005f8c7fbcaf140d8"
-  # Defina as regras de entrada e saída conforme necessário
-  # Exemplo de regra permitindo conexões na porta 5432 (PostgreSQL)
-  ingress {
-    from_port   = 5432
-    to_port     = 5432
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
 
 # Recurso RDS PostgreSQL
 resource "aws_db_instance" "rds-fiaptech" {
@@ -70,7 +55,7 @@ resource "aws_db_instance" "rds-fiaptech" {
   username                = "admin"
   publicly_accessible     = false
   db_subnet_group_name    = "default" # Selecione o grupo de subnets correto
-  vpc_security_group_ids  = [aws_security_group.db_security_group.id]
+  vpc_security_group_ids  = [aws_security_group.rds-fiaptech.id]
 
 }
 
