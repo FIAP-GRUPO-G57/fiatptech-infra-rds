@@ -46,7 +46,6 @@ resource "aws_db_instance" "db-rds-fiaptech" {
   manage_master_user_password = true # Guarda o usuário e senha do banco de dados no AWS Secrets Manager
   username                = "admin"
   publicly_accessible     = false
-  db_subnet_group_name    = "default" # Selecione o grupo de subnets correto
   vpc_security_group_ids  = [aws_security_group.sg-rds-fiaptech.id]
 
 lifecycle {
