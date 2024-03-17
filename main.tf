@@ -52,7 +52,7 @@ lifecycle {
 }
 
 resource "aws_secretsmanager_secret_rotation" "rds-fiaptech" {
-  secret_id = aws_db_instance.rds-fiaptech.master_user_secret[0].secret_arn
+  secret_id = aws_db_instance.db-rds-fiaptech.master_user_secret[0].secret_arn
 
   rotation_rules {
     automatically_after_days = 30 # (Optional) # O valor padrão é 7 dias
@@ -62,6 +62,6 @@ resource "aws_secretsmanager_secret_rotation" "rds-fiaptech" {
 # Optionally fetch the secret data if attributes need to be used as inputs
 # elsewhere.
 data "aws_secretsmanager_secret" "rds-fiaptech" {
-  arn = aws_db_instance.rds-fiaptech.master_user_secret[0].secret_arn
+  arn = aws_db_instance.db-rds-fiaptech.master_user_secret[0].secret_arn
 }
 
