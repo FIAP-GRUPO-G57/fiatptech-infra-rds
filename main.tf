@@ -7,21 +7,6 @@ provider "aws" {
 
 data "aws_availability_zones" "available" {}
 
-resource "aws_db_subnet_group" "rds-fiaptech" {
-  name       = "rds-prod-subnetgroup"
-  subnet_ids = ["subnet-0976e430aa2640363","subnet-09e3e7080c4b28af7"]
-
-  tags = {
-    Project     = "rds"
-    Terraform   = "true"
-    Environment = "prod"
-  }
-  lifecycle {
-  prevent_destroy = true
-  ignore_changes = [description, subnet_ids]
-    }
-}
-
 resource "aws_security_group" "sg-rds-fiaptech" {
   name   = "rds-prod-securitygroup"
   vpc_id = "vpc-005f8c7fbcaf140d8"
@@ -45,13 +30,10 @@ resource "aws_security_group" "sg-rds-fiaptech" {
     Terraform   = "true"
     Environment = "prod"
   }
-  lifecycle {
-  prevent_destroy = true
-}
 }
 
 # Recurso RDS PostgreSQL
-resource "aws_db_instance" "rds-fiaptech" {
+resource "aws_db_instance" "db-rds-fiaptech" {
   identifier              = "rds-fiaptech"
   allocated_storage       = 20
   storage_type            = "gp2"
