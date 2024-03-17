@@ -30,6 +30,9 @@ resource "aws_security_group" "sg-rds-fiaptech" {
     Terraform   = "true"
     Environment = "prod"
   }
+  lifecycle {
+  prevent_destroy = true
+}
 }
 
 # Recurso RDS PostgreSQL
