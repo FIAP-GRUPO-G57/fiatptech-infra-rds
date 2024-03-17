@@ -41,7 +41,7 @@ resource "aws_db_instance" "db-rds-fiaptech" {
   allocated_storage       = 20
   storage_type            = "gp2"
   engine                  = "postgres"
-  engine_version          = "16.1"
+  engine_version          = "11.17"
   instance_class          = "db.t2.micro"
   manage_master_user_password = true # Guarda o usuário e senha do banco de dados no AWS Secrets Manager
   username                = "admin"
